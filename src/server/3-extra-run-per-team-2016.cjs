@@ -1,16 +1,16 @@
 const csvtojson = require("./../node_modules/csvtojson");
 const fs = require("fs");
 
-function extraRunsPerTeam(matches, deliveries, extraRunPerTeam2016) {
+function extraRunsPerTeam(matches, deliveries) {
   if (
     matches === undefined ||
     deliveries === undefined ||
-    extraRunPerTeam2016 === undefined ||
     typeof matches !== "object" ||
     typeof deliveries !== "object"
   ) {
     throw new Error("Parameters passed is not correct");
   }
+  let extraRunPerTeam2016 = {};
 
   // match ids in 2016
   matchIDin2016 = matches
@@ -35,6 +35,7 @@ function extraRunsPerTeam(matches, deliveries, extraRunPerTeam2016) {
       }
     }
   }
+  return extraRunPerTeam2016;
 }
 
 csvtojson()
@@ -43,8 +44,7 @@ csvtojson()
     csvtojson()
       .fromFile("js-ipl-data-project/src/data/deliveries.csv")
       .then((deliveriesObj) => {
-        const extraRunPerTeam2016 = {};
-        extraRunsPerTeam(matchObj, deliveriesObj, extraRunPerTeam2016);
+        const extraRunPerTeam2016 = extraRunsPerTeam(matchObj, deliveriesObj);
 
         fs.writeFileSync(
           "js-ipl-data-project/src/public/output/3-extra-run-per-team-2016.json",
