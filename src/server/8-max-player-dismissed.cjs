@@ -7,10 +7,10 @@ function maxPlayerDismissed(deliveries) {
   }
   // count of pair of dismissed player and player who dismissed
   let dismissed = {};
-  let maxDismissedPlayer;
+  let maxDismissedPlayerObj = {};
   deliveries.forEach((delivery) => {
-    if (delivery.player_dismissed !== undefined) {
-      if (delivery.dismissal_kind === "caught") {
+    if (delivery.player_dismissed !== "") {
+      if (delivery.dismissal_kind === "run out") {
         let playerFielder = [delivery.player_dismissed, delivery.fielder];
 
         if (dismissed[playerFielder] === undefined) {
@@ -18,25 +18,37 @@ function maxPlayerDismissed(deliveries) {
         } else {
           dismissed[playerFielder] += 1;
         }
-      }
-    } else if (delivery.dismissal_kind === "bowled") {
-      let playersBowler = [delivery.player_dismissed, delivery.bowler];
+      } else if (delivery.dismissal_kind !== undefined) {
+        let playersBowler = [delivery.player_dismissed, delivery.bowler];
 
-      if (dismissed[playersBowler] === undefined) {
-        dismissed[playersBowler] = 1;
-      } else {
-        dismissed[playersBowler] += 1;
+        if (dismissed[playersBowler] === undefined) {
+          dismissed[playersBowler] = 1;
+        } else {
+          dismissed[playersBowler] += 1;
+        }
       }
     }
   });
   // selecting the players with max pairs
-  let max = 0;
   for (players in dismissed) {
-    if (dismissed[players] > max) {
-      max = dismissed[players];
+    if (maxDismissedPlayerObj[players] === undefined) {
+      maxDismissedPlayerObj[players] = dismissed[players];
+    } else {
+      if (dismissed[players] > maxDismissedPlayerObj[players]) {
+        maxDismissedPlayerObj[players] = dismissed[players];
+      }
+    }
+  }
+  // maximum times a player dismissed by another is
+  let maxDismissedPlayer;
+  let max = 0;
+  for (players in maxDismissedPlayerObj) {
+    if (maxDismissedPlayerObj[players] > max) {
+      max = maxDismissedPlayerObj[players];
       maxDismissedPlayer = [players, max];
     }
   }
+  console.log(JSON.stringify(maxDismissedPlayerObj));
   return maxDismissedPlayer;
 }
 
