@@ -2,6 +2,13 @@ const csvtojson = require("./../node_modules/csvtojson");
 const fs = require("fs");
 
 function matchesPerYear(matches, matchesPerYearObject) {
+  if (
+    matches === undefined ||
+    matchesPerYearObject === undefined ||
+    typeof matches !== "object"
+  ) {
+    throw new Error("Parameters passed is not correct");
+  }
   matches.forEach((match) => {
     let matchYear = match.season;
     // counts the matches per year
