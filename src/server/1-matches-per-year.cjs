@@ -1,9 +1,7 @@
 const csvtojson = require("./../node_modules/csvtojson");
 const fs = require("fs");
 
-let matchesPerYearObject = {};
-
-function matchesPerYear(matches) {
+function matchesPerYear(matches, matchesPerYearObject) {
   matches.forEach((match) => {
     let matchYear = match.season;
     // counts the matches per year
@@ -19,7 +17,8 @@ function matchesPerYear(matches) {
 csvtojson()
   .fromFile("js-ipl-data-project/src/data/matches.csv")
   .then((matchObj) => {
-    matchesPerYear(matchObj);
+    let matchesPerYearObject = {};
+    matchesPerYear(matchObj, matchesPerYearObject);
     // writing the output into a json file
     fs.writeFileSync(
       "js-ipl-data-project/src/public/output/1-matches-per-year.json",
