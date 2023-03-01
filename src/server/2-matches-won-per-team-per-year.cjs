@@ -2,6 +2,13 @@ const csvtojson = require("./../node_modules/csvtojson");
 const fs = require("fs");
 
 function matchesWonPerTeam(matches, matchesWonPerTeamPerYear) {
+  if (
+    matches === undefined ||
+    matchesWonPerTeamPerYear === undefined ||
+    typeof matches !== "object"
+  ) {
+    throw new Error("Parameters passed is not correct");
+  }
   matches.forEach((match) => {
     // If the match is not draw
     if (match.winner !== "") {
