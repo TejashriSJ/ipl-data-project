@@ -11,20 +11,23 @@ function superOverBestEconomy(deliveries) {
   deliveries.forEach((delivery) => {
     if (delivery.is_super_over === "1") {
       let runs = Number(delivery.total_runs);
-      let balls = 1;
+
+      let balls =
+        delivery.wide_runs === "0" && delivery.noball_runs === "0" ? 1 : 0;
+
       let byeRuns = Number(delivery.bye_runs);
       let legbyeRuns = Number(delivery.legbye_runs);
 
       if (superOverData[delivery.bowler] === undefined) {
         superOverData[delivery.bowler] = {
           runs: runs,
-          balls: 1,
+          balls: balls,
           byeRuns: byeRuns,
           legbyeRuns: legbyeRuns,
         };
       } else {
         superOverData[delivery.bowler].runs += runs;
-        superOverData[delivery.bowler].balls += 1;
+        superOverData[delivery.bowler].balls += balls;
         superOverData[delivery.bowler].byeRuns += byeRuns;
         superOverData[delivery.bowler].legbyeRuns += legbyeRuns;
       }
@@ -43,6 +46,7 @@ function superOverBestEconomy(deliveries) {
   let bestEconomyBowler = superOverEconomy.sort((bowler1, bowler2) => {
     return bowler1[1] - bowler2[1];
   })[0];
+
   return bestEconomyBowler;
 }
 
