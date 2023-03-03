@@ -10,7 +10,7 @@ function top10EconomicalBowlers(matches, deliveries) {
   ) {
     throw new Error("Parameters passed is not correct");
   }
-  let topEconomicalBowlers10 = [];
+
   // taking ids from matches of 2015
   const matchID2015 = matches
     .filter((match) => {
@@ -28,16 +28,18 @@ function top10EconomicalBowlers(matches, deliveries) {
   const deliveryPerBowler = {};
   deliveriesIn2015.forEach((delivery) => {
     let bowler = delivery.bowler;
+    let balls =
+      delivery.wide_runs === "0" && delivery.noball_runs === "0" ? 1 : 0;
     if (deliveryPerBowler[bowler] === undefined) {
       deliveryPerBowler[bowler] = {
         runs: Number(delivery.total_runs),
-        balls: 1,
+        balls: balls,
         byeRuns: Number(delivery.bye_runs),
         legbyeRuns: Number(delivery.legbye_runs),
       };
     } else {
       deliveryPerBowler[bowler].runs += Number(delivery.total_runs);
-      deliveryPerBowler[bowler].balls += 1;
+      deliveryPerBowler[bowler].balls += balls;
       deliveryPerBowler[bowler].byeRuns += Number(delivery.bye_runs);
       deliveryPerBowler[bowler].legbyeRuns += Number(delivery.legbye_runs);
     }
@@ -52,7 +54,7 @@ function top10EconomicalBowlers(matches, deliveries) {
     let legbyeRuns = deliveryPerBowler[bowler].legbyeRuns;
     economyOfBowlers.push([
       bowler,
-      (runs - byeRuns - legbyeRuns) / (balls / 6),
+      ((runs - byeRuns - legbyeRuns) / (balls / 6)).toFixed(2),
     ]);
   }
   // sorting in ascending order of based on bowlers economy
@@ -61,8 +63,9 @@ function top10EconomicalBowlers(matches, deliveries) {
   });
 
   // names of top 10 economical bowlers
+  let topEconomicalBowlers10 = [];
   topEconomicalBowlers10 = economyOfBowlers.slice(0, 10).map((bowlerRuns) => {
-    return bowlerRuns[0];
+    return bowlerRuns;
   });
   return topEconomicalBowlers10;
 }
