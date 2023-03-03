@@ -9,11 +9,15 @@ function matchesWonPerTeam(matches) {
   matches.forEach((match) => {
     // If the match is not draw
     if (match.winner !== "") {
-      let WinnerInYear = [match.season, match.winner];
-      if (matchesWonPerTeamPerYear[WinnerInYear] === undefined) {
-        matchesWonPerTeamPerYear[WinnerInYear] = 1;
+      let season = match.season;
+      let winner = match.winner;
+      if (matchesWonPerTeamPerYear[winner] == undefined) {
+        matchesWonPerTeamPerYear[winner] = {};
+      }
+      if (matchesWonPerTeamPerYear[winner][season] === undefined) {
+        matchesWonPerTeamPerYear[winner][season] = 1;
       } else {
-        matchesWonPerTeamPerYear[WinnerInYear] += 1;
+        matchesWonPerTeamPerYear[winner][season] += 1;
       }
     }
   });
