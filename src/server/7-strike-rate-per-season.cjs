@@ -16,11 +16,11 @@ function strikeRateOfBatterPerSeason(matches, deliveries) {
   let countRunsAndBalls = {};
   let season = matches[0].season;
 
-  for (let match of matches) {
+  matches.map((match) => {
     if (match.season !== season) {
       season = match.season;
     }
-    for (let delivery of deliveries) {
+    deliveries.map((delivery) => {
       if (match.id === delivery.match_id) {
         let batsman = delivery.batsman;
         // wide and no ball will not be considered
@@ -41,14 +41,14 @@ function strikeRateOfBatterPerSeason(matches, deliveries) {
           countRunsAndBalls[batsman][season].balls += balls;
         }
       }
-    }
-  }
+    });
+  });
   console.log(JSON.stringify(countRunsAndBalls));
   //calculating strike of each batsman per season
   Object.keys(countRunsAndBalls).forEach((batsman) => {
     strikeRatePerSeason[batsman] = {};
     Object.keys(countRunsAndBalls[batsman]).forEach((year) => {
-      strikeRatePerSeason[batsman][year] = {};
+      strikeRatePerSeason[batsman][year];
       let runs = countRunsAndBalls[batsman][year]["runs"];
       let balls = countRunsAndBalls[batsman][year]["balls"];
       console.log(runs, balls);
@@ -56,9 +56,9 @@ function strikeRateOfBatterPerSeason(matches, deliveries) {
         (runs / balls) *
         100
       ).toFixed(2);
-      strikeRatePerSeason[batsman][year] = {
-        strike: countRunsAndBalls[batsman][year]["strike"],
-      };
+      strikeRatePerSeason[batsman][year] = Number(
+        countRunsAndBalls[batsman][year]["strike"]
+      );
     });
   });
 
