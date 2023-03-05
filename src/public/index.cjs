@@ -2,16 +2,11 @@
 fetch("./output/1-matches-per-year.json")
   .then((data) => data.json())
   .then((data) => {
-    const dataValues = Object.values(data);
-    const dataKeys = Object.keys(data);
+    const matchesCount = Object.values(data);
+    const years = Object.keys(data);
     Highcharts.chart("container1", {
       title: {
         text: "IPL matches per year",
-        align: "left",
-      },
-
-      subtitle: {
-        text: 'Source: <a href="https://irecusa.org/programs/solar-jobs-census/" target="_blank">IREC</a>',
         align: "left",
       },
 
@@ -45,7 +40,7 @@ fetch("./output/1-matches-per-year.json")
       series: [
         {
           name: "Matches",
-          data: dataValues,
+          data: matchesCount,
         },
       ],
 
@@ -89,14 +84,14 @@ fetch("./output/2-matches-won-per-team-per-year.json")
       data[player] = yearArray;
     });
 
-    let object = {};
+    let seriesObject = {};
     Object.keys(data).map((teams) => {
-      object[teams] = {
+      seriesObject[teams] = {
         name: teams,
         data: Object.values(data[teams]),
       };
     });
-    console.log(Object.values(object));
+    console.log(Object.values(seriesObject));
 
     Highcharts.chart("container2", {
       chart: {
@@ -139,7 +134,7 @@ fetch("./output/2-matches-won-per-team-per-year.json")
         },
       },
 
-      series: Object.values(object),
+      series: Object.values(seriesObject),
     });
   });
 
@@ -152,11 +147,6 @@ fetch("./output/3-extra-run-per-team-2016.json")
     Highcharts.chart("container3", {
       title: {
         text: "Extra runs per team in 2016",
-        align: "left",
-      },
-
-      subtitle: {
-        text: 'Source: <a href="https://irecusa.org/programs/solar-jobs-census/" target="_blank">IREC</a>',
         align: "left",
       },
 
@@ -230,9 +220,7 @@ fetch("./output/4-top-10-econimical-bowlers.json")
       title: {
         text: "Top 10 Economical Bowlers",
       },
-      subtitle: {
-        text: "In the year 2015",
-      },
+
       xAxis: {
         categories: bowlers,
         crosshair: true,
@@ -278,11 +266,6 @@ fetch("./output/5-team-won-toss&match.json")
     Highcharts.chart("container5", {
       title: {
         text: " Number of times each team won the toss and also won the match ",
-        align: "left",
-      },
-
-      subtitle: {
-        text: 'Source: <a href="https://irecusa.org/programs/solar-jobs-census/" target="_blank">IREC</a>',
         align: "left",
       },
 
@@ -429,29 +412,23 @@ fetch("./output/7-strike-rate-per-season.json")
       data[player] = yearArray;
     });
 
-    let object = {};
+    let objectForSeries = {};
     Object.keys(data).map((teams) => {
-      object[teams] = {
+      objectForSeries[teams] = {
         name: teams,
         data: Object.values(data[teams]),
       };
     });
-    console.log(Object.values(object));
+    console.log(Object.values(objectForSeries));
     Highcharts.chart("container7", {
       chart: {
         type: "bar",
       },
       title: {
-        text: "Historic World Population by Region",
+        text: "Strike rate per player per year",
         align: "left",
       },
-      subtitle: {
-        text:
-          "Source: <a " +
-          'href="https://en.wikipedia.org/wiki/List_of_continents_and_continental_subregions_by_population"' +
-          'target="_blank">Wikipedia.org</a>',
-        align: "left",
-      },
+
       xAxis: {
         categories: [
           "2008",
@@ -504,7 +481,7 @@ fetch("./output/7-strike-rate-per-season.json")
       credits: {
         enabled: false,
       },
-      series: Object.values(object),
+      series: Object.values(objectForSeries),
     });
   });
 // Eighth one
@@ -524,11 +501,6 @@ fetch("./output/8-max-player-dismissed.json")
     Highcharts.chart("container8", {
       title: {
         text: " Number of times one player has been dismissed by another player",
-        align: "left",
-      },
-
-      subtitle: {
-        text: 'Source: <a href="https://irecusa.org/programs/solar-jobs-census/" target="_blank">IREC</a>',
         align: "left",
       },
 
@@ -602,11 +574,6 @@ fetch("./output/9-best-economy-super-over.json")
     Highcharts.chart("container9", {
       title: {
         text: "Economy in super over",
-        align: "left",
-      },
-
-      subtitle: {
-        text: 'Source: <a href="https://irecusa.org/programs/solar-jobs-census/" target="_blank">IREC</a>',
         align: "left",
       },
 
