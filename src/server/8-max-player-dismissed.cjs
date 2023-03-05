@@ -6,50 +6,50 @@ function maxPlayerDismissed(deliveries) {
     throw new Error("Parameters passed is not correct");
   }
   // count of pair of dismissed player and player who dismissed
-  let dismissed = {};
-  let maxDismissedPlayerObj = {};
-  deliveries.forEach((delivery) => {
+  let dismissedCount = {};
+
+  deliveries.map((delivery) => {
     if (delivery.player_dismissed !== "") {
+      //if it is run out then player is dismissed by fielder
       if (delivery.dismissal_kind === "run out") {
         let playerFielder = [delivery.player_dismissed, delivery.fielder];
 
-        if (dismissed[playerFielder] === undefined) {
-          dismissed[playerFielder] = 1;
+        if (dismissedCount[playerFielder] === undefined) {
+          dismissedCount[playerFielder] = 1;
         } else {
-          dismissed[playerFielder] += 1;
+          dismissedCount[playerFielder] += 1;
         }
-      } else if (delivery.dismissal_kind !== undefined) {
-        let playersBowler = [delivery.player_dismissed, delivery.bowler];
-
-        if (dismissed[playersBowler] === undefined) {
-          dismissed[playersBowler] = 1;
+      }
+      // for other than run out player is dismissed by bowler
+      else if (delivery.dismissal_kind !== undefined) {
+        let playerBowler = [delivery.player_dismissed, delivery.bowler];
+        if (dismissedCount[playerBowler] === undefined) {
+          dismissedCount[playerBowler] = 1;
         } else {
-          dismissed[playersBowler] += 1;
+          dismissedCount[playerBowler] += 1;
         }
       }
     }
   });
-  // selecting the players with max pairs
-  for (players in dismissed) {
-    if (maxDismissedPlayerObj[players] === undefined) {
-      maxDismissedPlayerObj[players] = dismissed[players];
+  // Maximum times each player dismissed by another
+  let maxDismissedPlayersObj = {};
+  for (players in dismissedCount) {
+    if (maxDismissedPlayersObj[players] === undefined) {
+      maxDismissedPlayersObj[players] = dismissedCount[players];
     } else {
-      if (dismissed[players] > maxDismissedPlayerObj[players]) {
-        maxDismissedPlayerObj[players] = dismissed[players];
+      if (dismissedCount[players] > maxDismissedPlayersObj[players]) {
+        maxDismissedPlayersObj[players] = dismissedCount[players];
       }
     }
   }
   // maximum times a player dismissed by another is
-  let maxDismissedPlayer;
-  let max = 0;
-  for (players in maxDismissedPlayerObj) {
-    if (maxDismissedPlayerObj[players] > max) {
-      max = maxDismissedPlayerObj[players];
-      maxDismissedPlayer = [players, max];
+  let maxDismissedPlayerArray = Object.entries(maxDismissedPlayersObj).sort(
+    (player1, player2) => {
+      return player2[1] - player1[1];
     }
-  }
-  console.log(JSON.stringify(maxDismissedPlayerObj));
-  return maxDismissedPlayer;
+  );
+  // selecting first 10 maximun dismissed player count
+  return maxDismissedPlayerArray.slice(0, 10);
 }
 
 csvtojson()
