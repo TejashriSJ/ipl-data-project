@@ -5,11 +5,12 @@ function playerOfTheSeason(matches) {
   if (matches === undefined || typeof matches !== "object") {
     throw new Error("Parameters passed is not correct");
   }
+
   let playerOfTheSeasonObject = {};
   let countPlayerOfMatch = {};
   // count of player in how many matches he was the player_of_match per season
 
-  matches.forEach((match) => {
+  matches.map((match) => {
     if (
       countPlayerOfMatch[[match.season, match.player_of_match]] === undefined
     ) {
@@ -21,27 +22,28 @@ function playerOfTheSeason(matches) {
 
   // find the player who got max player_of_match per season
   let season = ""; // for keeping tract of individual season
-  let max = 0;
+  let maxWon = 0;
 
   //takes each player from countPlayerOfMatch
 
-  for (let player in countPlayerOfMatch) {
+  Object.keys(countPlayerOfMatch).map((player) => {
     let playerSeason = player.split(",")[0];
     let playerName = player.split(",")[1];
 
     // stores the maximum count of player of match per season
     if (playerSeason === season) {
-      if (countPlayerOfMatch[player] > max) {
-        max = countPlayerOfMatch[player];
-        playerOfTheSeasonObject[season] = playerName;
+      if (countPlayerOfMatch[player] > maxWon) {
+        maxWon = countPlayerOfMatch[player];
+        playerOfTheSeasonObject[season] = { playerName, maxWon };
       }
     } else {
       // if season changed means season will be updated and max value will also update
       season = playerSeason;
-      max = countPlayerOfMatch[player];
-      playerOfTheSeasonObject[season] = [playerName, max];
+      maxWon = countPlayerOfMatch[player];
+      playerOfTheSeasonObject[season] = { playerName, maxWon };
     }
-  }
+  });
+  console.log(JSON.stringify(playerOfTheSeasonObject));
   return playerOfTheSeasonObject;
 }
 csvtojson()
