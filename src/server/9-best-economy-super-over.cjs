@@ -6,15 +6,13 @@ function superOverBestEconomy(deliveries) {
     throw new Error("Parameters passed is not correct");
   }
   let superOverData = {};
-  let superOverEconomy = [];
+
   //for each delivery if it is super over then take their data and count
-  deliveries.forEach((delivery) => {
+  deliveries.map((delivery) => {
     if (delivery.is_super_over === "1") {
       let runs = Number(delivery.total_runs);
-
       let balls =
         delivery.wide_runs === "0" && delivery.noball_runs === "0" ? 1 : 0;
-
       let byeRuns = Number(delivery.bye_runs);
       let legbyeRuns = Number(delivery.legbye_runs);
 
@@ -34,18 +32,20 @@ function superOverBestEconomy(deliveries) {
     }
   });
   // calculate economy of each bowler in super overs
-  for (let bowler in superOverData) {
+  let superOverEconomy = [];
+  superOverEconomy = Object.keys(superOverData).map((bowler) => {
     let runs = superOverData[bowler].runs;
     let balls = superOverData[bowler].balls.toFixed(2);
     let byeRuns = superOverData[bowler].byeRuns;
     let legbyeRuns = superOverData[bowler].legbyeRuns;
     let economyRate = ((runs - byeRuns - legbyeRuns) / (balls / 6)).toFixed(2);
-    superOverEconomy.push([bowler, economyRate]);
-  }
-  // best economy bowler
+    return [bowler, economyRate];
+  });
+
+  // best economy bowler in sorted order
   let bestEconomyBowler = superOverEconomy.sort((bowler1, bowler2) => {
     return bowler1[1] - bowler2[1];
-  })[0];
+  });
 
   return bestEconomyBowler;
 }
